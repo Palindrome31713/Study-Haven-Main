@@ -1,5 +1,23 @@
+# Dependencies
 node_modules/
+
+# Build output
 dist/
-.DS_Store
-*.local
+build/
+
+# Env & secrets
 .env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Local
+*.local
