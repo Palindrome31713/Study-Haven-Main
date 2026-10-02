@@ -62,6 +62,8 @@ const PATHS: Record<string, ReactNode> = {
   trophy: <path d="M8 4h8v5a4 4 0 0 1-8 0V4zM8 5H4.5v1.5A3.5 3.5 0 0 0 8 10M16 5h3.5v1.5A3.5 3.5 0 0 1 16 10M12 13v3M8.5 21h7M10 21v-2.5a2 2 0 0 1 4 0V21" />,
   edit: <path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17l-1 3zM13.5 6.5l3 3" />,
   star: <path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5-4.8-4.6 6.6-.9L12 2.5z" />,
+  news: <path d="M4 5h13a1 1 0 0 1 1 1v12a2 2 0 0 0 2-2V9h-3M4 5v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M7 9h7M7 13h7M7 17h4" />,
+  bell: <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6zM10.5 19a1.7 1.7 0 0 0 3 0" />,
 };
 
 export function Icon({ name, size = 20, className = "", sw = 1.7, style }: { name: string; size?: number; className?: string; sw?: number; style?: CSSProperties }) {
