@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Library from "./components/Library";
 import Videos from "./components/Videos";
 import Quizzes, { type QuizSeed } from "./components/Quizzes";
+import News from "./components/News";
 import Chatbot from "./components/Chatbot";
 import { Icon, Wheel } from "./components/kit";
 import {
@@ -18,6 +19,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: "library", label: "Library", icon: "doc" },
   { id: "videos", label: "Videos", icon: "play" },
   { id: "quiz", label: "Quizzes", icon: "calc" },
+  { id: "news", label: "News", icon: "news" },
 ];
 
 export default function App() {
@@ -145,6 +147,7 @@ export default function App() {
             {tab === "library" && <Library profile={profile} startQuiz={startQuiz} />}
             {tab === "videos" && <Videos profile={profile} />}
             {tab === "quiz" && <Quizzes profile={profile} seed={quizSeed} onStatsChanged={() => setStats(loadStats())} />}
+            {tab === "news" && <News profile={profile} />}
           </motion.div>
         </AnimatePresence>
       </main>
