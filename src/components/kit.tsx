@@ -64,6 +64,8 @@ const PATHS: Record<string, ReactNode> = {
   star: <path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5-4.8-4.6 6.6-.9L12 2.5z" />,
   news: <path d="M4 5h13a1 1 0 0 1 1 1v12a2 2 0 0 0 2-2V9h-3M4 5v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M7 9h7M7 13h7M7 17h4" />,
   bell: <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6zM10.5 19a1.7 1.7 0 0 0 3 0" />,
+  paperclip: <path d="M20 11.5l-8.4 8.4a5 5 0 0 1-7-7L13.5 4a3.3 3.3 0 0 1 4.7 4.7L9.7 17.1a1.7 1.7 0 0 1-2.4-2.4l7.7-7.7" />,
+  download: <path d="M12 3v12M12 15l-4-4M12 15l4-4M4 20h16" />,
 };
 
 export function Icon({ name, size = 20, className = "", sw = 1.7, style }: { name: string; size?: number; className?: string; sw?: number; style?: CSSProperties }) {
