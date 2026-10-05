@@ -36,27 +36,33 @@ function smoothstep(t: number) {
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
+// The wordmark now lives in a band at the TOP of the page (above the form) so
+// it never gets covered by the info box. Layers fill this band and centre inside it.
+const BAND = "pointer-events-none absolute inset-x-0 top-[13%] h-[30%] overflow-hidden";
+
 const BASE_TEXT =
   "pointer-events-none absolute inset-0 flex items-center justify-center whitespace-nowrap font-display font-black leading-none tracking-tight select-none";
-const SIZE = { fontSize: "clamp(2.4rem, 9.5vw, 8.5rem)" };
+const SIZE = { fontSize: "clamp(2.2rem, 8.5vw, 7.5rem)" };
 
 type Spring = MotionValue<number>;
 
-/** Shared animated layers — one component so all hooks run unconditionally. */
+/** Shared animated layers — one component so all hooks run unconditionally.
+ *  All layers live inside the top band so nothing sits behind the form card. */
 function BrandLayers({ sx, sy, gBlur, c0, c1 }: { sx: Spring; sy: Spring; gBlur: MotionValue<number>; c0: string; c1: string }) {
-  // deep parallax (ghost layers) / tight parallax (hero layer)
+  // deep parallax (ghost layers) / tight parallax (hero layer). Vertical travel
+  // is kept small since the band is short.
   const gx = useTransform(sx, [-1, 1], [42, -42]);
-  const gy = useTransform(sy, [-1, 1], [24, -24]);
+  const gy = useTransform(sy, [-1, 1], [10, -10]);
   const fx = useTransform(sx, [-1, 1], [16, -16]);
-  const fy = useTransform(sy, [-1, 1], [9, -9]);
+  const fy = useTransform(sy, [-1, 1], [5, -5]);
   const rx = useTransform(sx, [-1, 1], [70, -70]);
-  const ry = useTransform(sy, [-1, 1], [36, -36]);
+  const ry = useTransform(sy, [-1, 1], [12, -12]);
   const skew = useTransform(sx, [-1, 1], [-2, 2]);
 
   const grad = `linear-gradient(100deg, ${c0}, #8ea2ff 55%, ${c1})`;
 
   return (
-    <>
+    <div className={BAND}>
       {/* back ghost - thin outline, deep parallax, slow breathe */}
       <motion.div
         className={`${BASE_TEXT} anim-brand-breathe`}
@@ -94,12 +100,12 @@ function BrandLayers({ sx, sy, gBlur, c0, c1 }: { sx: Spring; sy: Spring; gBlur:
       {/* hero line - crisp gradient fill + warm rim, revealed left-to-right on mount */}
       <HeroLine fx={fx} fy={fy} skew={skew} grad={grad} />
 
-      {/* mirrored reflection echoing below */}
+      {/* mirrored reflection echoing just below the wordmark, inside the band */}
       <motion.div
-        className={`${BASE_TEXT} !inset-y-auto !top-[58%] overflow-hidden opacity-[0.07]`}
+        className={`${BASE_TEXT} !inset-y-auto !top-[72%] overflow-hidden opacity-[0.07]`}
         style={{
           ...SIZE,
-          height: "42%",
+          height: "28%",
           x: rx,
           y: ry,
           transformOrigin: "top center",
@@ -111,7 +117,7 @@ function BrandLayers({ sx, sy, gBlur, c0, c1 }: { sx: Spring; sy: Spring; gBlur:
       >
         <span className="text-paper-100">{WORD}</span>
       </motion.div>
-    </>
+    </div>
   );
 }
 
@@ -170,9 +176,9 @@ export default function GiantBrand() {
   const sv = useSpring(speed, { stiffness: 80, damping: 20 });
   const gBlur = useTransform(sv, [0, 1], [6, 14]);
 
-  // cursor spotlight position (percent strings)
+  // cursor spotlight position (percent strings) — centred on the top band
   const glowX = useTransform(sx, [-1, 1], ["24%", "76%"]);
-  const glowY = useTransform(sy, [-1, 1], ["28%", "72%"]);
+  const glowY = useTransform(sy, [-1, 1], ["30%", "60%"]);
   const glowBg = useTransform(
     [glowX, glowY],
     ([x, y]) =>
@@ -223,13 +229,13 @@ export default function GiantBrand() {
 
       {mounted && <BrandLayers sx={sx} sy={sy} gBlur={gBlur} c0={c0} c1={c1} />}
 
-      {/* twinkling sparkles scattered around the mark */}
+      {/* twinkling sparkles scattered around the top band */}
       {[
-        ["12%", "22%", 1.1, "#ffbe4d"],
-        ["84%", "18%", 1.6, "#5d7bff"],
-        ["72%", "72%", 0.8, "#3fd0c9"],
-        ["22%", "78%", 1.9, "#ff7a54"],
-        ["50%", "12%", 1.35, "#ffd37a"],
+        ["12%", "30%", 1.1, "#ffbe4d"],
+        ["84%", "26%", 1.6, "#5d7bff"],
+        ["72%", "46%", 0.8, "#3fd0c9"],
+        ["22%", "48%", 1.9, "#ff7a54"],
+        ["50%", "22%", 1.35, "#ffd37a"],
       ].map(([x, y, delay, color], i) => (
         <span
           key={i}
