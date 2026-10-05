@@ -1,11 +1,50 @@
-import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   GRADE_SUBJECTS, STREAMS, SUBJECTS, subjectsForProfile,
   type Grade, type Profile, type SubjectId,
 } from "../data/curriculum";
 import { Icon, Scramble, Wheel } from "./kit";
 import GiantBrand from "./GiantBrand";
+
+/* ---------------- multilingual tagline: "your study haven, ready" ---------------- */
+
+const TAGLINE_LANGS = [
+  { code: "en", label: "English", text: "your study haven, ready." },
+  { code: "hi", label: "हिन्दी", text: "आपका अध्ययन आश्रय, तैयार है।" },
+  { code: "ur", label: "اردو", text: "آپ کا مطالعہ گاہ، تیار ہے۔" },
+  { code: "ta", label: "தமிழ்", text: "உங்கள் படிப்பு இடம், தயார்." },
+  { code: "te", label: "తెలుగు", text: "మీ చదువు నిలయం, సిద్ధం." },
+  { code: "kn", label: "ಕನ್ನಡ", text: "ನಿಮ್ಮ ಓದು ಗೂಡು, ಸಿದ್ಧ." },
+  { code: "ml", label: "മലയാളം", text: "നിങ്ങളുടെ പഠനക്കൂട്, തയ്യാർ." },
+  { code: "bn", label: "বাংলা", text: "তোমার পড়াশোনার আড্ডা, প্রস্তুত।" },
+  { code: "mr", label: "मराठी", text: "तुमचा अभ्यास वारा, तयार आहे." },
+  { code: "gu", label: "ગુજરાતી", text: "તમારું અભ્યાસ આશ્રયસ્થાન, તૈયાર છે." },
+  { code: "pa", label: "ਪੰਜਾਬੀ", text: "ਤੁਹਾਡੀ ਪੜ੍ਹਾਈ ਥਾਂ, ਤਿਆਰ ਹੈ।" },
+];
+
+/** Cross-fading multilingual version of the intro headline. */
+function MultiLangTagline() {
+  const reduced = useReducedMotion();
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (reduced) return;
+    const iv = setInterval(() => setI((v) => (v + 1) % TAGLINE_LANGS.length), 3800);
+    return () => clearInterval(iv);
+  }, [reduced]);
+  const cur = TAGLINE_LANGS[i];
+  return (
+    <div className="mt-4 h-7 overflow-hidden" aria-live="polite">
+      {/* key change remounts the inner span -> CSS fade+rise in on every language */}
+      <span key={cur.code} className="anim-lang inline-flex items-center gap-2 text-sm font-medium tracking-wide text-paper-50/60">
+        <span className="rounded-full border border-paper-50/15 bg-ink-800 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-marigold-300">
+          {cur.label}
+        </span>
+        {cur.text}
+      </span>
+    </div>
+  );
+}
 
 export default function Onboarding({ onDone }: { onDone: (p: Profile) => void }) {
   const [step, setStep] = useState(0);
@@ -86,6 +125,7 @@ export default function Onboarding({ onDone }: { onDone: (p: Profile) => void })
               <Scramble text="haven," delay={900} />
               <span className="text-marigold-400"><Scramble text=" ready." delay={1800} /></span>
             </h1>
+            <MultiLangTagline />
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-paper-50/70">
               Tell Study Haven once — your name, your class, your subjects — and it builds your personal
               shelf: <span className="text-paper-50">NCERT textbooks, curated video lessons, chapter quizzes that regenerate every time, and an AI doubt-buddy.</span>
