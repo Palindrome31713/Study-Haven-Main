@@ -194,11 +194,14 @@ export const SQP_GROUPS: Array<{ id: SqpGroup; label: string; blurb: string }> =
   { id: "other", label: "Additional", blurb: "NCC, Artificial Intelligence" },
 ];
 
-export function sqpUrl(file: string) {
+export type SqpClass = "x" | "xii";
+
+export function sqpUrl(file: string, cls: SqpClass = "x") {
   // relative to the deployed base (works on GitHub Pages project sites too)
-  return `./sqp/${encodeURIComponent(file)}`;
+  return `./${cls === "xii" ? "sqp12" : "sqp"}/${encodeURIComponent(file)}`;
 }
 
-export function cbseUrl(file: string) {
-  return `https://cbseacademic.nic.in/web_material/SQP/ClassX_2025_26/${encodeURIComponent(file)}`;
+export function cbseUrl(file: string, cls: SqpClass = "x") {
+  const dir = cls === "xii" ? "ClassXII_2026_27" : "ClassX_2025_26";
+  return `https://cbseacademic.nic.in/web_material/SQP/${dir}/${encodeURIComponent(file)}`;
 }
