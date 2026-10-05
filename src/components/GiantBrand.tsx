@@ -38,7 +38,7 @@ const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 // The wordmark now lives in a band at the TOP of the page (above the form) so
 // it never gets covered by the info box. Layers fill this band and centre inside it.
-const BAND = "pointer-events-none absolute inset-x-0 top-[13%] h-[30%] overflow-hidden";
+const BAND = "pointer-events-none absolute inset-x-0 top-[2%] h-[30%] overflow-hidden";
 
 const BASE_TEXT =
   "pointer-events-none absolute inset-0 flex items-center justify-center whitespace-nowrap font-display font-black leading-none tracking-tight select-none";
