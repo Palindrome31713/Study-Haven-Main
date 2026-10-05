@@ -142,16 +142,16 @@ export default function Background3D() {
       raf = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      // smooth interpolation toward cursor
-      current.x += (target.x - current.x) * 0.045;
-      current.y += (target.y - current.y) * 0.045;
+      // smooth interpolation toward cursor (very slow easing = silky, subtle)
+      current.x += (target.x - current.x) * 0.02;
+      current.y += (target.y - current.y) * 0.02;
 
-      // gentle camera parallax
-      camera.position.x = current.x * 1.6;
-      camera.position.y = current.y * 1.0;
+      // whisper-soft camera parallax
+      camera.position.x = current.x * 0.55;
+      camera.position.y = current.y * 0.35;
       camera.lookAt(0, 0, 0);
 
-      // particles drift + subtle repulsion from cursor position
+      // particles drift + barely-there repulsion from cursor position
       const cx = current.x * 17;
       const cy = current.y * 10;
       for (let i = 0; i < COUNT; i++) {
@@ -161,23 +161,23 @@ export default function Background3D() {
         const dx = bx - cx;
         const dy = by - cy;
         const d2 = dx * dx + dy * dy;
-        const push = d2 < 12 ? (12 - d2) / 12 : 0; // 0..1 near cursor
+        const push = d2 < 9 ? (9 - d2) / 9 : 0; // 0..1 near cursor
         const len = Math.sqrt(d2) || 1;
-        positions[ix] = bx + (dx / len) * push * 1.4 + Math.sin(t * 0.4 + by) * 0.12;
-        positions[ix + 1] = by + (dy / len) * push * 1.4 + Math.cos(t * 0.35 + bx) * 0.12;
-        positions[ix + 2] = basePos[ix + 2] + Math.sin(t * 0.3 + i) * 0.1;
+        positions[ix] = bx + (dx / len) * push * 0.45 + Math.sin(t * 0.18 + by) * 0.05;
+        positions[ix + 1] = by + (dy / len) * push * 0.45 + Math.cos(t * 0.15 + bx) * 0.05;
+        positions[ix + 2] = basePos[ix + 2] + Math.sin(t * 0.12 + i) * 0.04;
       }
       posAttr.needsUpdate = true;
-      points.rotation.z = t * 0.01 + current.x * 0.05;
+      points.rotation.z = t * 0.004 + current.x * 0.018;
 
-      // floating shapes bob & spin, tilt toward cursor
+      // floating shapes bob & spin slowly, tilt gently toward cursor
       for (const f of floaters) {
-        f.mesh.rotation.x += 0.0016 + f.speed * 0.002;
-        f.mesh.rotation.y += 0.0021 + f.speed * 0.002;
-        f.mesh.position.y += Math.sin(t * f.speed + f.phase) * 0.004 * f.amp;
+        f.mesh.rotation.x += 0.0006 + f.speed * 0.0006;
+        f.mesh.rotation.y += 0.0008 + f.speed * 0.0006;
+        f.mesh.position.y += Math.sin(t * f.speed * 0.6 + f.phase) * 0.0015 * f.amp;
       }
-      shapeGroup.rotation.y = current.x * 0.12;
-      shapeGroup.rotation.x = -current.y * 0.08;
+      shapeGroup.rotation.y = current.x * 0.05;
+      shapeGroup.rotation.x = -current.y * 0.035;
 
       renderer.render(scene, camera);
     };
