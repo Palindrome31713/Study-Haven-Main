@@ -12,7 +12,22 @@ import {
 import { Icon, Reveal } from "./kit";
 
 const SEEN_KEY = "studyhaven.news.seen.v1";
-const REFRESH_MS = 5 * 60 * 1000; // auto-refresh every 5 minutes while the tab is open
+const LAST_FETCH_KEY = "studyhaven.news.lastFetch.v1";
+const SNAPSHOT_KEY = "studyhaven.news.snapshot.v1";
+const DAY_MS = 24 * 60 * 60 * 1000; // refresh at most once a day
+
+type Snapshot = { t: number; items: NewsItem[]; live: boolean };
+
+function loadSnapshot(): Snapshot | null {
+  try {
+    const raw = localStorage.getItem(SNAPSHOT_KEY);
+    if (!raw) return null;
+    const snap = JSON.parse(raw) as Snapshot;
+    return snap && Array.isArray(snap.items) ? snap : null;
+  } catch {
+    return null;
+  }
+}
 
 function loadSeen(): string[] {
   try {
@@ -39,8 +54,29 @@ export default function News({ profile }: { profile: Profile }) {
   const firstLoad = useRef(true);
 
   const load = useCallback(
-    async (isRefresh = false) => {
-      if (isRefresh) setRefreshing(true);
+    async (force = false) => {
+      // Once-a-day policy: skip the network unless a day has passed since the
+      // last fetch (or the user explicitly clicked "Check for updates").
+      if (!force) {
+        try {
+          const last = Number(localStorage.getItem(LAST_FETCH_KEY) || 0);
+          if (last && Date.now() - last < DAY_MS) {
+            const snap = loadSnapshot();
+            if (snap) {
+              setItems(snap.items);
+              setLive(snap.live);
+              setUpdatedAt(snap.t);
+              setError(false);
+              firstLoad.current = false;
+              return;
+            }
+            // No usable cache — fall through and fetch anyway.
+          }
+        } catch {
+          /* ignore storage errors and fall through to fetch */
+        }
+      }
+      if (force) setRefreshing(true);
       else if (!firstLoad.current) setRefreshing(true);
       setError(false);
       const ctrl = new AbortController();
@@ -50,6 +86,12 @@ export default function News({ profile }: { profile: Profile }) {
         setItems(res.items);
         setLive(res.live);
         setUpdatedAt(Date.now());
+        try {
+          localStorage.setItem(LAST_FETCH_KEY, String(Date.now()));
+          localStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), items: res.items, live: res.live }));
+        } catch {
+          /* storage may be full — non-fatal */
+        }
         // mark everything as seen shortly after it's been displayed once
         const freshIds = res.items.map((i) => i.id);
         if (firstLoad.current) {
@@ -70,8 +112,6 @@ export default function News({ profile }: { profile: Profile }) {
 
   useEffect(() => {
     load();
-    const iv = setInterval(load, REFRESH_MS);
-    return () => clearInterval(iv);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -110,7 +150,7 @@ export default function News({ profile }: { profile: Profile }) {
               News<span className="text-flame-500">.</span> straight from the Board.
             </h2>
             <p className="mt-2 max-w-xl text-[15px] text-ink-600">
-              Live circulars, datesheets and result notices from cbse.gov.in — refreshed automatically every few minutes,
+              Live circulars, datesheets and result notices from cbse.gov.in — refreshed once a day,
               so nothing slips past you between classes, {profile.name}.
             </p>
           </div>
