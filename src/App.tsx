@@ -9,6 +9,7 @@ import Quizzes, { type QuizSeed } from "./components/Quizzes";
 import News from "./components/News";
 import SamplePapers from "./components/SamplePapers";
 import Chatbot from "./components/Chatbot";
+import Background3D from "./components/Background3D";
 import { Icon, Wheel } from "./components/kit";
 import {
   bumpVisit, clearProfile, loadProfile, loadStats, saveProfile,
@@ -72,6 +73,9 @@ export default function App() {
 
   return (
     <div className="paper-bg relative min-h-screen overflow-x-clip">
+      {/* interactive Three.js cursor-responsive background layer */}
+      <Background3D />
+
       {/* ambient floating stationery */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
         <Icon name="sigma" size={54} className="anim-floaty absolute left-[3%] top-[220px] text-cobalt-500/12" />

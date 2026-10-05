@@ -48,6 +48,7 @@ html {
 
 body {
   font-family: var(--font-body);
+  /* base colour behind the fixed Three.js canvas (Background3D) */
   background: var(--color-paper-50);
   color: var(--color-ink-900);
   -webkit-font-smoothing: antialiased;
@@ -61,8 +62,9 @@ body {
 /* ---------- surfaces ---------- */
 
 /* school notebook: faint blue rules + a red margin line */
+/* transparent so the Three.js Background3D canvas shows through */
 .paper-bg {
-  background-color: var(--color-paper-50);
+  background-color: transparent;
   background-image:
     linear-gradient(90deg, transparent 71px, rgba(228, 87, 46, 0.16) 71px, rgba(228, 87, 46, 0.16) 73px, transparent 73px),
     repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(43, 80, 224, 0.075) 31px, rgba(43, 80, 224, 0.075) 32px);
