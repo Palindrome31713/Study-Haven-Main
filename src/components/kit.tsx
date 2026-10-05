@@ -73,6 +73,7 @@ const PATHS: Record<string, ReactNode> = {
     </>
   ),
   moon: <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />,
+  camera: <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM12 10.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" />,
 };
 
 export function Icon({ name, size = 20, className = "", sw = 1.7, style }: { name: string; size?: number; className?: string; sw?: number; style?: CSSProperties }) {

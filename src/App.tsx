@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Library from "./components/Library";
 import Videos from "./components/Videos";
 import Quizzes, { type QuizSeed } from "./components/Quizzes";
+import StudyTimer from "./components/StudyTimer";
 import News from "./components/News";
 import SamplePapers from "./components/SamplePapers";
 import Chatbot from "./components/Chatbot";
@@ -22,6 +23,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: "library", label: "Library", icon: "doc" },
   { id: "videos", label: "Videos", icon: "play" },
   { id: "quiz", label: "Quizzes", icon: "calc" },
+  { id: "timer", label: "Study Timer", icon: "clock" },
   { id: "news", label: "News", icon: "news" },
   { id: "papers", label: "Sample Papers", icon: "paperclip" },
 ];
@@ -183,6 +185,7 @@ export default function App() {
             {tab === "library" && <Library profile={profile} startQuiz={startQuiz} />}
             {tab === "videos" && <Videos profile={profile} />}
             {tab === "quiz" && <Quizzes profile={profile} seed={quizSeed} onStatsChanged={() => setStats(loadStats())} />}
+            {tab === "timer" && <StudyTimer profile={profile} onStatsChanged={() => setStats(loadStats())} />}
             {tab === "news" && <News profile={profile} />}
             {tab === "papers" && <SamplePapers profile={profile} />}
           </motion.div>

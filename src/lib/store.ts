@@ -1,6 +1,6 @@
 import type { Profile, SubjectId } from "../data/curriculum";
 
-export type Tab = "home" | "library" | "videos" | "quiz" | "news" | "papers";
+export type Tab = "home" | "library" | "videos" | "quiz" | "timer" | "news" | "papers";
 
 const PROFILE_KEY = "studyhaven.profile.v1";
 const STATS_KEY = "studyhaven.stats.v1";
