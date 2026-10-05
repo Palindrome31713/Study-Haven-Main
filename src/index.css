@@ -158,6 +158,19 @@ body {
 
 .anim-spin-slow { animation: spin-slow 26s linear infinite; }
 .anim-floaty { animation: floaty 7s ease-in-out infinite; }
+
+/* GiantBrand — cursor-reactive login wordmark */
+@keyframes brand-breathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50%      { transform: translate(-50%, -50%) scale(1.025); }
+}
+.anim-brand-breathe { animation: brand-breathe 9s ease-in-out infinite; }
+
+@keyframes brand-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50%      { opacity: 0.9; transform: scale(1); }
+}
+.anim-brand-twinkle { animation: brand-twinkle 3.6s ease-in-out infinite; opacity: 0; }
 .anim-blink { animation: blink 1.1s steps(1) infinite; }
 .anim-pop { animation: pop-in 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.4) both; }
 
@@ -194,7 +207,7 @@ input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visib
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .stars, .stars::after, .anim-spin-slow, .anim-floaty, .anim-blink, .marquee-track, .shimmer, .anim-pop {
+  .stars, .stars::after, .anim-spin-slow, .anim-floaty, .anim-blink, .marquee-track, .shimmer, .anim-pop, .anim-brand-breathe, .anim-brand-twinkle {
     animation: none !important;
   }
 }

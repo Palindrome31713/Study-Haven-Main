@@ -5,6 +5,7 @@ import {
   type Grade, type Profile, type SubjectId,
 } from "../data/curriculum";
 import { Icon, Scramble, Wheel } from "./kit";
+import GiantBrand from "./GiantBrand";
 
 export default function Onboarding({ onDone }: { onDone: (p: Profile) => void }) {
   const [step, setStep] = useState(0);
@@ -55,11 +56,14 @@ export default function Onboarding({ onDone }: { onDone: (p: Profile) => void })
       <div className="stars" />
       <div className="dotted absolute inset-0 opacity-30" />
 
+      {/* huge cursor-reactive STUDY HAVEN wordmark behind the form */}
+      <GiantBrand />
+
       {/* drifting study doodles */}
-      <Icon name="sigma" size={46} className="anim-floaty absolute left-[7%] top-[18%] text-marigold-400/50" />
-      <Icon name="flask" size={40} className="anim-floaty absolute right-[9%] top-[24%] text-teal-400/50" />
-      <Icon name="book" size={44} className="anim-floaty absolute bottom-[16%] left-[12%] text-cobalt-400/50" />
-      <Icon name="cap" size={40} className="anim-floaty absolute bottom-[22%] right-[14%] text-flame-400/50" />
+      <Icon name="sigma" size={46} className="anim-floaty absolute left-[7%] top-[18%] z-[1] text-marigold-400/50" />
+      <Icon name="flask" size={40} className="anim-floaty absolute right-[9%] top-[24%] z-[1] text-teal-400/50" />
+      <Icon name="book" size={44} className="anim-floaty absolute bottom-[16%] left-[12%] z-[1] text-cobalt-400/50" />
+      <Icon name="cap" size={40} className="anim-floaty absolute bottom-[22%] right-[14%] z-[1] text-flame-400/50" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col px-5 py-8 md:px-10">
         {/* brand */}
