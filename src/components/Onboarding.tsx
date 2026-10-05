@@ -83,8 +83,8 @@ export default function Onboarding({ onDone }: { onDone: (p: Profile) => void })
             </p>
             <h1 className="font-display text-5xl font-extrabold leading-[1.02] tracking-tight md:text-7xl">
               <Scramble text="Your study" /><br />
-              <Scramble text="haven," delay={350} />
-              <span className="text-marigold-400"><Scramble text=" ready." delay={700} /></span>
+              <Scramble text="haven," delay={900} />
+              <span className="text-marigold-400"><Scramble text=" ready." delay={1800} /></span>
             </h1>
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-paper-50/70">
               Tell Study Haven once — your name, your class, your subjects — and it builds your personal

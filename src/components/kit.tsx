@@ -96,7 +96,7 @@ export function Wheel({ size = 40, className = "" }: { size?: number; className?
 
 const GLYPHS = "अआकखगचछजझटठडढणतथदधनपफबभमयरलवशषसह+×=∑π#";
 
-export function Scramble({ text, className = "", delay = 0, speed = 28 }: { text: string; className?: string; delay?: number; speed?: number }) {
+export function Scramble({ text, className = "", delay = 0, speed = 11 }: { text: string; className?: string; delay?: number; speed?: number }) {
   const reduced = useReducedMotion();
   const [out, setOut] = useState(reduced ? text : "");
   useEffect(() => {
@@ -104,22 +104,40 @@ export function Scramble({ text, className = "", delay = 0, speed = 28 }: { text
       setOut(text);
       return;
     }
-    let frame = 0;
+    // Time-based reveal (~speed chars/sec) instead of per-frame counting.
+    const dur = (text.length / speed) * 1000;
+    // Each character gets its own smooth resolve window (no hard pop-in).
+    const windows = text.split("").map((_, i) => {
+      const center = ((i + 0.5) / text.length) * dur;
+      return { start: Math.max(0, center - dur / text.length / 1.7), end: Math.min(dur, center + dur / text.length / 1.7) };
+    });
     let raf = 0;
     let start: number | null = null;
+    let last = 0;
     const tick = (t: number) => {
       if (start === null) start = t + delay;
       if (t >= start) {
-        frame++;
-        const revealed = Math.floor((frame * speed) / 60);
-        const s = text
-          .split("")
-          .map((ch, i) => (i < revealed ? ch : ch === " " ? " " : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]))
-          .join("");
-        setOut(s);
-        if (revealed >= text.length) {
+        const el = t - start;
+        if (el >= dur) {
           setOut(text);
           return;
+        }
+        // Throttle glyph flicker to ~30fps so it reads calm, not jittery.
+        if (t - last >= 33) {
+          last = t;
+          const s = text
+            .split("")
+            .map((ch, i) => {
+              if (ch === " ") return " ";
+              const w = windows[i];
+              if (el >= w.end) return ch;
+              if (el <= w.start) return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+              // blend zone: chance of showing the real char grows smoothly
+              const p = (el - w.start) / (w.end - w.start);
+              return Math.random() < p * p ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+            })
+            .join("");
+          setOut(s);
         }
       }
       raf = requestAnimationFrame(tick);
@@ -127,7 +145,11 @@ export function Scramble({ text, className = "", delay = 0, speed = 28 }: { text
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [text, reduced, delay, speed]);
-  return <span className={className}>{out || "\u00A0"}</span>;
+  return (
+    <span className={className} style={{ transition: "opacity .4s ease", opacity: out ? 1 : 0 }}>
+      {out || "\u00A0"}
+    </span>
+  );
 }
 
 /* ---------------- scroll reveal ---------------- */
