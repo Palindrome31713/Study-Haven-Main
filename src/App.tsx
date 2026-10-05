@@ -13,6 +13,7 @@ import Background3D from "./components/Background3D";
 import { Icon, Wheel } from "./components/kit";
 import {
   bumpVisit, clearProfile, loadProfile, loadStats, saveProfile,
+  loadTheme, saveTheme, type Theme,
   type Stats, type Tab,
 } from "./lib/store";
 
@@ -30,6 +31,15 @@ export default function App() {
   const [stats, setStats] = useState<Stats>(() => loadStats());
   const [tab, setTab] = useState<Tab>("home");
   const [quizSeed, setQuizSeed] = useState<QuizSeed | null>(null);
+  const [theme, setTheme] = useState<Theme>(() => loadTheme());
+
+  // keep <html> class + colour-scheme in sync with the chosen theme
+  useEffect(() => {
+    saveTheme(theme);
+    window.dispatchEvent(new Event("studyhaven:theme"));
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   // returning visitors: count the visit (streak) exactly once per day
   useEffect(() => {
@@ -72,20 +82,20 @@ export default function App() {
   const streamName = profile.stream ? STREAMS.find((s) => s.id === profile.stream)?.name : null;
 
   return (
-    <div className="paper-bg relative min-h-screen overflow-x-clip">
+    <div className="theme-anim paper-bg relative min-h-screen overflow-x-clip">
       {/* interactive Three.js cursor-responsive background layer */}
       <Background3D />
 
       {/* ambient floating stationery */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        <Icon name="sigma" size={54} className="anim-floaty absolute left-[3%] top-[220px] text-cobalt-500/12" />
-        <Icon name="flask" size={46} className="anim-floaty absolute right-[4%] top-[340px] text-teal-500/15" style={{ ["--tilt" as string]: "12deg", animationDelay: "1.2s" }} />
-        <Icon name="plane" size={50} className="anim-floaty absolute left-[6%] top-[900px] text-flame-500/12" style={{ ["--tilt" as string]: "-10deg", animationDelay: "2s" }} />
-        <Icon name="atom" size={60} className="anim-floaty absolute right-[5%] top-[1150px] text-plum-500/12" style={{ ["--tilt" as string]: "6deg", animationDelay: "0.6s" }} />
+        <Icon name="sigma" size={54} className="anim-floaty absolute left-[3%] top-[220px] text-cobalt-500/12 dark:text-cobalt-400/20" />
+        <Icon name="flask" size={46} className="anim-floaty absolute right-[4%] top-[340px] text-teal-500/15 dark:text-teal-400/25" style={{ ["--tilt" as string]: "12deg", animationDelay: "1.2s" }} />
+        <Icon name="plane" size={50} className="anim-floaty absolute left-[6%] top-[900px] text-flame-500/12 dark:text-flame-400/20" style={{ ["--tilt" as string]: "-10deg", animationDelay: "2s" }} />
+        <Icon name="atom" size={60} className="anim-floaty absolute right-[5%] top-[1150px] text-plum-500/12 dark:text-plum-400/20" style={{ ["--tilt" as string]: "6deg", animationDelay: "0.6s" }} />
       </div>
 
       {/* ---------- header ---------- */}
-      <header className="sticky top-0 z-30 border-b-2 border-ink-900 bg-paper-50/92 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b-2 border-ink-900 bg-paper-50/92 backdrop-blur-md dark:border-ink-900 dark:bg-paper-50/85">
         <div className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3.5 md:px-10">
           <button onClick={() => goTo("home")} className="group flex items-center gap-2.5" aria-label="Study Haven home">
             <span className="text-flame-500 transition-transform duration-700 group-hover:rotate-90"><Wheel size={30} /></span>
@@ -120,6 +130,26 @@ export default function App() {
 
           {/* identity */}
           <div className="ml-auto flex items-center gap-2.5">
+            {/* dark / light theme toggle */}
+            <button
+              onClick={toggleTheme}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-full border-2 border-ink-900/15 text-ink-600 transition-all duration-300 hover:rotate-12 hover:border-ink-900 hover:text-ink-900"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={theme}
+                  initial={{ y: 14, opacity: 0, rotate: -60 }}
+                  animate={{ y: 0, opacity: 1, rotate: 0 }}
+                  exit={{ y: -14, opacity: 0, rotate: 60 }}
+                  transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-0 grid place-items-center"
+                >
+                  <Icon name={theme === "dark" ? "sun" : "moon"} size={16} className={theme === "dark" ? "text-marigold-500" : ""} />
+                </motion.span>
+              </AnimatePresence>
+            </button>
             <span className="hidden items-center gap-1.5 rounded-full border-2 border-ink-900 px-3 py-1.5 text-[11px] font-extrabold text-ink-900 lg:flex">
               <Icon name="cap" size={13} className="text-flame-500" />
               Class {profile.grade}{streamName ? ` · ${streamName}` : ""}

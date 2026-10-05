@@ -129,3 +129,28 @@ export function greeting(): string {
   if (h < 21) return "Good evening";
   return "Late-night grind";
 }
+
+/* ---------- theme (light / dark) ---------- */
+
+export type Theme = "light" | "dark";
+const THEME_KEY = "studyhaven.theme.v1";
+
+export function loadTheme(): Theme {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved === "light" || saved === "dark") return saved;
+  } catch { /* ignore */ }
+  // first visit: follow the OS preference
+  if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) return "dark";
+  return "light";
+}
+
+export function applyTheme(theme: Theme) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
+}
+
+export function saveTheme(theme: Theme) {
+  localStorage.setItem(THEME_KEY, theme);
+  applyTheme(theme);
+}

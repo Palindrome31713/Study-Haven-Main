@@ -54,6 +54,79 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---------- dark theme (toggled via <html class="dark">) ---------- */
+/* The app is built on ink/paper semantic colours, so inverting those two
+   ramps flips the whole site. Accent hues are nudged brighter for legibility. */
+.dark body {
+  background: #10142a;
+  color: #eef0f7;
+}
+
+.dark {
+  --color-ink-950: #eef0f7;
+  --color-ink-900: #e6e9f4;
+  --color-ink-800: #c9cfe4;
+  --color-ink-700: #a7afcc;
+  --color-ink-600: #8b94b5;
+  --color-ink-400: #5d6688;
+
+  --color-paper-50: #10142a;
+  --color-paper-100: #161c38;
+  --color-paper-200: #1e2547;
+  --color-paper-300: #2a3260;
+
+  --color-marigold-300: #ffdb8f;
+  --color-marigold-400: #ffc766;
+  --color-marigold-500: #ffb03a;
+  --color-marigold-600: #e9992b;
+
+  --color-flame-400: #ff8f6e;
+  --color-flame-500: #f26a45;
+  --color-flame-600: #d1512f;
+
+  --color-teal-400: #3ecbb8;
+  --color-teal-500: #1aa594;
+  --color-teal-600: #12897b;
+
+  --color-cobalt-400: #7d95ff;
+  --color-cobalt-500: #4f70ea;
+  --color-cobalt-600: #3a55c9;
+
+  --color-plum-400: #b789e6;
+  --color-plum-500: #9a63d6;
+
+  --shadow-lift: 0 14px 34px -14px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 6px 18px -8px rgba(0, 0, 0, 0.45);
+}
+
+/* notebook paper lines glow softly in dark mode */
+.dark .paper-bg {
+  background-image:
+    linear-gradient(90deg, transparent 71px, rgba(242, 106, 69, 0.2) 71px, rgba(242, 106, 69, 0.2) 73px, transparent 73px),
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(125, 149, 255, 0.1) 31px, rgba(125, 149, 255, 0.1) 32px);
+}
+
+.dark ::selection {
+  background: var(--color-marigold-400);
+  color: #10142a;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-ink-700);
+  border-color: var(--color-paper-50);
+}
+
+/* smooth cross-fade when flipping themes */
+.theme-anim,
+.theme-anim * {
+  transition:
+    background-color 0.45s ease,
+    border-color 0.45s ease,
+    color 0.45s ease,
+    fill 0.45s ease,
+    stroke 0.45s ease;
+}
+
 ::selection {
   background: var(--color-marigold-400);
   color: var(--color-ink-900);

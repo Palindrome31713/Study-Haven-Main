@@ -8,6 +8,9 @@ import * as THREE from "three";
  * Scene: a soft particle field + floating geometric shapes rendered in the
  * brand palette. Camera rotation and particle displacement are smoothly
  * lerped toward the cursor for a premium, parallax feel at ~60fps.
+ *
+ * The scene also listens for the `studyhaven:theme` window event so the
+ * fog / particles recolour when the user flips between light & dark mode.
  */
 export default function Background3D() {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -36,7 +39,8 @@ export default function Background3D() {
     camera.position.set(0, 0, 14);
 
     // ---------- lights ----------
-    scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+    const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+    scene.add(ambient);
     const key = new THREE.DirectionalLight(0xffb347, 0.9); // marigold key light
     key.position.set(6, 8, 10);
     scene.add(key);
@@ -116,6 +120,24 @@ export default function Background3D() {
     }
     scene.add(shapeGroup);
 
+    // ---------- theme sync (light <-> dark) ----------
+    const isDarkNow = () => document.documentElement.classList.contains("dark");
+    const applySceneTheme = () => {
+      const dark = isDarkNow();
+      // fog colour follows the page base so shapes fade into the right backdrop
+      (scene.fog as THREE.FogExp2).color.set(dark ? 0x10142a : 0xf7f1e3);
+      pMat.opacity = dark ? 0.85 : 0.5;
+      ambient.intensity = dark ? 0.35 : 0.55;
+      key.intensity = dark ? 1.15 : 0.9;
+      rim.intensity = dark ? 0.75 : 0.5;
+      for (let i = 0; i < shapeMats.length; i++) {
+        shapeMats[i].opacity = dark ? [0.4, 0.36, 0.3][i] : [0.22, 0.2, 0.14][i];
+      }
+    };
+    const onThemeEvent = () => applySceneTheme();
+    window.addEventListener("studyhaven:theme", onThemeEvent);
+    applySceneTheme();
+
     // ---------- cursor tracking with lerp ----------
     const target = { x: 0, y: 0 }; // normalized -1..1
     const current = { x: 0, y: 0 };
@@ -188,6 +210,7 @@ export default function Background3D() {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("studyhaven:theme", onThemeEvent);
       renderer.dispose();
       pGeo.dispose();
       pMat.dispose();

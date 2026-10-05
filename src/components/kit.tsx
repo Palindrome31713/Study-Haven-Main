@@ -66,6 +66,13 @@ const PATHS: Record<string, ReactNode> = {
   bell: <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6zM10.5 19a1.7 1.7 0 0 0 3 0" />,
   paperclip: <path d="M20 11.5l-8.4 8.4a5 5 0 0 1-7-7L13.5 4a3.3 3.3 0 0 1 4.7 4.7L9.7 17.1a1.7 1.7 0 0 1-2.4-2.4l7.7-7.7" />,
   download: <path d="M12 3v12M12 15l-4-4M12 15l4-4M4 20h16" />,
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4.2" />
+      <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1" />
+    </>
+  ),
+  moon: <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" />,
 };
 
 export function Icon({ name, size = 20, className = "", sw = 1.7, style }: { name: string; size?: number; className?: string; sw?: number; style?: CSSProperties }) {
