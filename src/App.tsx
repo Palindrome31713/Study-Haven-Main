@@ -96,17 +96,17 @@ export default function App() {
         <Icon name="atom" size={60} className="anim-floaty absolute right-[5%] top-[1150px] text-plum-500/12 dark:text-plum-400/20" style={{ ["--tilt" as string]: "6deg", animationDelay: "0.6s" }} />
       </div>
 
-      {/* ---------- floating dock nav (single line) ---------- */}
-      <header className="pointer-events-none sticky top-0 z-30">
-        <div className="liquid-glass pointer-events-auto mx-auto mt-3 flex w-fit max-w-[96vw] items-center gap-1 rounded-full p-1.5 transition-all duration-300">
-          {/* brand — single line now, no stacked tagline */}
+      {/* ---------- classic navbar (single line, white bar / black text) ---------- */}
+      <header className="sticky top-0 z-30 border-b border-ink-900/10 bg-white shadow-[0_2px_12px_-6px_rgba(26,26,46,0.15)] transition-colors duration-300 dark:border-paper-50/10 dark:bg-ink-900 dark:shadow-[0_2px_12px_-6px_rgba(0,0,0,0.5)]">
+        <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-5 md:px-10">
+          {/* brand */}
           <button
             onClick={() => goTo("home")}
-            className="group mr-1 flex shrink-0 items-center gap-2 rounded-full px-2.5 py-1.5"
+            className="group mr-1 flex shrink-0 items-center gap-2 rounded-full px-2 py-1.5"
             aria-label="Study Haven home"
           >
             <span className="text-flame-500 transition-transform duration-700 group-hover:rotate-90"><Wheel size={22} /></span>
-            <span className="hidden whitespace-nowrap font-display text-sm font-extrabold tracking-[0.08em] text-ink-900 sm:block dark:text-paper-50">
+            <span className="hidden whitespace-nowrap font-display text-sm font-extrabold tracking-[0.08em] text-black sm:block dark:text-white">
               STUDY&nbsp;HAVEN
             </span>
           </button>
@@ -114,21 +114,21 @@ export default function App() {
           <span className="mr-1 h-6 w-px shrink-0 bg-ink-900/10 dark:bg-paper-50/10" aria-hidden />
 
           {/* tabs — sliding pill indicator */}
-          <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {TABS.map((t) => (
               <button
                 key={t.id}
                 onClick={() => goTo(t.id)}
                 className={`relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition-colors duration-300 lg:px-3.5 ${
                   tab === t.id
-                    ? "text-paper-50 dark:text-ink-900"
-                    : "text-ink-600 hover:text-ink-900 dark:text-paper-200 dark:hover:text-paper-50"
+                    ? "text-white dark:text-ink-900"
+                    : "text-black hover:text-flame-600 dark:text-white dark:hover:text-marigold-400"
                 }`}
               >
                 {tab === t.id && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full bg-ink-900/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_18px_-6px_rgba(26,26,46,0.6)] backdrop-blur-md dark:bg-marigold-400/90"
+                    className="absolute inset-0 rounded-full bg-black shadow-[0_4px_14px_-4px_rgba(0,0,0,0.5)] dark:bg-marigold-400"
                     transition={{ type: "spring", damping: 26, stiffness: 380 }}
                   />
                 )}
@@ -143,12 +143,12 @@ export default function App() {
           <span className="mx-1 h-6 w-px shrink-0 bg-ink-900/10 dark:bg-paper-50/10" aria-hidden />
 
           {/* identity cluster — everything on one line */}
-          <div className="flex shrink-0 items-center gap-1.5">
+          <div className="ml-auto flex shrink-0 items-center gap-1.5">
             <button
               onClick={toggleTheme}
               title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-ink-900/15 text-ink-600 transition-all duration-300 hover:rotate-12 hover:border-ink-900 hover:text-ink-900 dark:border-paper-50/15 dark:text-paper-200 dark:hover:border-paper-50 dark:hover:text-paper-50"
+              className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-ink-900/20 text-black transition-all duration-300 hover:rotate-12 hover:border-black dark:border-paper-50/20 dark:text-white dark:hover:border-white"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -163,7 +163,7 @@ export default function App() {
                 </motion.span>
               </AnimatePresence>
             </button>
-            <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-ink-900/15 px-2.5 py-1 text-[10px] font-extrabold text-ink-900 xl:flex dark:border-paper-50/15 dark:text-paper-50">
+            <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-ink-900/20 px-2.5 py-1 text-[10px] font-extrabold text-black xl:flex dark:border-paper-50/20 dark:text-white">
               <Icon name="cap" size={12} className="text-flame-500" />
               Class {profile.grade}{streamName ? ` · ${streamName}` : ""}
             </span>
