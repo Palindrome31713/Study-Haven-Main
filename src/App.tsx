@@ -100,7 +100,7 @@ export default function App() {
       <header className="sticky top-0 z-30 pt-3 pb-1">
         <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
           {/* floating dock — one line, everything inside */}
-          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-white/70 bg-white/55 p-2 shadow-[0_18px_40px_-18px_rgba(26,26,46,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-paper-50/15 dark:bg-ink-900/55 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-cobalt-500/20 bg-paper-50/85 p-2 shadow-[0_18px_40px_-18px_rgba(30,64,175,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-cobalt-400/20 dark:bg-ink-900/70 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
             {/* brand — moving wheel logo + clean wordmark */}
             <button
               onClick={() => goTo("home")}
@@ -109,10 +109,10 @@ export default function App() {
             >
               <span className="relative grid h-9 w-9 shrink-0 place-items-center">
                 {/* soft halo behind the wheel */}
-                <span className="absolute inset-0 rounded-full bg-marigold-400/25 blur-md transition-all duration-500 ease-out group-hover:bg-flame-500/30" />
+                <span className="absolute inset-0 rounded-full bg-cobalt-400/25 blur-md transition-all duration-500 ease-out group-hover:bg-cobalt-500/35" />
                 <Wheel size={30} className="anim-spin-slow relative text-ink-900 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 dark:text-paper-50" />
               </span>
-              <span className="whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-flame-500 dark:text-paper-50 dark:group-hover:text-marigold-400">
+              <span className="whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-cobalt-600 dark:text-paper-50 dark:group-hover:text-cobalt-400">
                 Study&nbsp;Haven
               </span>
             </button>
@@ -125,19 +125,19 @@ export default function App() {
                   <button
                     key={t.id}
                     onClick={() => goTo(t.id)}
-                    className={`group relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-extrabold tracking-wide transition-colors duration-300 ease-out lg:px-3.5 ${
+                    className={`group relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-300 ease-out lg:px-3.5 ${
                       active
-                        ? "text-ink-900 dark:text-paper-50"
+                        ? "bg-cobalt-500/10 text-ink-900 dark:bg-cobalt-400/15 dark:text-paper-50"
                         : "text-ink-900/60 hover:text-ink-900 dark:text-paper-50/60 dark:hover:text-paper-50"
                     }`}
                   >
-                    <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? "text-flame-500 dark:text-marigold-400" : ""}`} />
+                    <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? "text-cobalt-600 dark:text-cobalt-400" : ""}`} />
                     <span className="hidden md:inline">{t.label}</span>
-                    {/* sliding underline indicator */}
+                    {/* sliding highlight bar under the active tab */}
                     {active && (
                       <motion.span
                         layoutId="tab-underline"
-                        className="absolute inset-x-2 bottom-0.5 h-[3px] rounded-full bg-gradient-to-r from-flame-500 via-marigold-400 to-teal-400"
+                        className="absolute inset-x-2 bottom-0.5 h-[3px] rounded-full bg-cobalt-600 dark:bg-cobalt-400"
                         transition={{ type: "spring", damping: 26, stiffness: 260 }}
                       />
                     )}
