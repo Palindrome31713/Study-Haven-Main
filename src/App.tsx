@@ -145,24 +145,18 @@ export default function App() {
 
       {/* ---------- Navbar: clean single-line glass dock, smooth motion ---------- */}
       <header className="sticky top-0 z-30 pt-3 pb-1">
-        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
-          {/* floating dock — one line, everything inside; warm paper tint matching the notebook theme */}
-          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-cobalt-500/25 bg-[#f6f8ff]/85 p-2 shadow-[0_18px_40px_-18px_rgba(30,64,175,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-cobalt-400/25 dark:bg-[#101a33]/75 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
-            {/* brand — moving wheel logo + clean wordmark */}
-            <button
-              onClick={() => goTo("home")}
-              className="group relative flex shrink-0 items-center gap-2.5 rounded-2xl px-2 py-1.5"
-              aria-label="Study Haven home"
-            >
-              <span className="relative grid h-9 w-9 shrink-0 place-items-center">
-                {/* soft halo behind the wheel */}
-                <span className="absolute inset-0 rounded-full bg-cobalt-400/25 blur-md transition-all duration-500 ease-out group-hover:bg-cobalt-500/35" />
-                <Wheel size={30} className="anim-spin-slow relative text-ink-900 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 dark:text-paper-50" />
-              </span>
-              <span className="whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-cobalt-600 dark:text-paper-50 dark:group-hover:text-cobalt-400">
-                Study&nbsp;Haven
-              </span>
-            </button>
+        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-3 px-5 md:px-10">
+          {/* brand sits aside the navbar — yellow logo badge, spins gently */}
+          <button
+            onClick={() => goTo("home")}
+            className="group relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-marigold-400 shadow-[0_8px_20px_-6px_rgba(255,190,77,0.7)] ring-2 ring-marigold-500/40 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110"
+            aria-label="Study Haven home"
+          >
+            <Wheel size={26} className="anim-spin-slow relative text-ink-900" />
+          </button>
+
+          {/* floating dock — pure white with shadow (dark mode: deep navy so it stays visible) */}
+          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] bg-white p-2 shadow-[0_18px_40px_-18px_rgba(15,23,42,0.35),0_2px_8px_rgba(15,23,42,0.08)] backdrop-blur-xl transition-colors duration-300 dark:bg-[#0d1526] dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.8),0_2px_10px_rgba(0,0,0,0.5)]">
 
             {/* tabs — simple labels with a gliding ink underline */}
             <nav className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -176,7 +170,7 @@ export default function App() {
                     className={`group relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-300 ease-out lg:px-3.5 ${
                       active
                         ? `${a.pill} ${a.text}`
-                        : "text-ink-900/60 hover:text-ink-900 dark:text-paper-50/60 dark:hover:text-paper-50"
+                        : "text-black/60 hover:text-black dark:text-white/60 dark:hover:text-white"
                     }`}
                   >
                     <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? a.iconText : ""}`} />
@@ -200,7 +194,7 @@ export default function App() {
               onClick={toggleTheme}
               title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-ink-900/20 text-black transition-all duration-300 hover:rotate-12 hover:border-black dark:border-paper-50/20 dark:text-white dark:hover:border-white"
+              className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-black/20 text-black transition-all duration-300 hover:rotate-12 hover:border-black dark:border-white/30 dark:text-white dark:hover:border-white"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
