@@ -98,7 +98,7 @@ export default function App() {
 
       {/* ---------- floating dock nav (single line) ---------- */}
       <header className="pointer-events-none sticky top-0 z-30">
-        <div className="pointer-events-auto mx-auto mt-3 flex w-fit max-w-[96vw] items-center gap-1 rounded-full border border-ink-900/10 bg-paper-50/70 p-1.5 shadow-[0_10px_40px_-12px_rgba(26,26,46,0.35)] backdrop-blur-xl transition-colors duration-300 dark:border-paper-50/10 dark:bg-ink-900/60">
+        <div className="liquid-glass pointer-events-auto mx-auto mt-3 flex w-fit max-w-[96vw] items-center gap-1 rounded-full p-1.5 transition-all duration-300">
           {/* brand — single line now, no stacked tagline */}
           <button
             onClick={() => goTo("home")}
@@ -128,7 +128,7 @@ export default function App() {
                 {tab === t.id && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full bg-ink-900 shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)] dark:bg-marigold-400"
+                    className="absolute inset-0 rounded-full bg-ink-900/85 shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_6px_18px_-6px_rgba(26,26,46,0.6)] backdrop-blur-md dark:bg-marigold-400/90"
                     transition={{ type: "spring", damping: 26, stiffness: 380 }}
                   />
                 )}
