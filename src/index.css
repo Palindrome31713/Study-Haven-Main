@@ -270,20 +270,14 @@ body {
 .line-mask { overflow: hidden; }
 .line-mask > span { display: block; }
 
-/* ---------- Navbar: smooth glass dock ---------- */
+/* ---------- Navbar: simple glass dock with moving logo ---------- */
 
-/* the dock itself breathes like it's floating — very subtle, slow, eased */
+/* the dock floats almost imperceptibly — slow, eased breathing */
 @keyframes dock-float {
   0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-1.5px); }
+  50%      { transform: translateY(-1px); }
 }
-.anim-dock { animation: dock-float 12s cubic-bezier(0.37, 0, 0.63, 1) infinite; will-change: transform; }
-
-/* tab pills sit level (no tilt so nothing clips at the top); hover lifts gently */
-.sticker-btn { transform: rotate(0deg); transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.45s ease, color 0.45s ease, box-shadow 0.45s ease; }
-.sticker-btn:nth-child(even) { transform: rotate(0deg); }
-.sticker-btn:hover { transform: translateY(-1.5px) scale(1.03); }
-.sticker-btn:active { transform: scale(0.96) !important; }
+.anim-dock { animation: dock-float 14s cubic-bezier(0.37, 0, 0.63, 1) infinite; will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
   .anim-dock { animation: none !important; }

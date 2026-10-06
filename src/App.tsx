@@ -101,52 +101,45 @@ export default function App() {
         <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
           {/* floating dock — one line, everything inside */}
           <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-white/70 bg-white/55 p-2 shadow-[0_18px_40px_-18px_rgba(26,26,46,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-paper-50/15 dark:bg-ink-900/55 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
-            {/* brand — no RGB logo badge, just the wordmark */}
+            {/* brand — moving wheel logo + clean wordmark */}
             <button
               onClick={() => goTo("home")}
-              className="group relative flex shrink-0 items-center gap-2 rounded-2xl px-2 py-1.5"
+              className="group relative flex shrink-0 items-center gap-2.5 rounded-2xl px-2 py-1.5"
               aria-label="Study Haven home"
             >
-              <span className="hidden whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-flame-500 sm:block dark:text-paper-50 dark:group-hover:text-marigold-400">
+              <span className="relative grid h-9 w-9 shrink-0 place-items-center">
+                {/* soft halo behind the wheel */}
+                <span className="absolute inset-0 rounded-full bg-marigold-400/25 blur-md transition-all duration-500 ease-out group-hover:bg-flame-500/30" />
+                <Wheel size={30} className="anim-spin-slow relative text-ink-900 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110 dark:text-paper-50" />
+              </span>
+              <span className="whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-flame-500 dark:text-paper-50 dark:group-hover:text-marigold-400">
                 Study&nbsp;Haven
               </span>
             </button>
 
-            {/* tabs — playful sticker pills that pop & tilt */}
-            <nav className="flex min-w-0 flex-1 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {TABS.map((t, i) => {
+            {/* tabs — simple labels with a gliding ink underline */}
+            <nav className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {TABS.map((t) => {
                 const active = tab === t.id;
-                const accents = ["#ff5d3a", "#ffb020", "#2ec4b6", "#3a6df0", "#a06cd5", "#e5533d", "#1f9e8e"];
-                const c = accents[i % accents.length];
                 return (
                   <button
                     key={t.id}
                     onClick={() => goTo(t.id)}
-                    className={`sticker-btn group relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:px-3.5 ${
+                    className={`group relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-extrabold tracking-wide transition-colors duration-300 ease-out lg:px-3.5 ${
                       active
-                        ? "text-white shadow-[0_10px_22px_-10px_rgba(26,26,46,0.6)] dark:text-ink-900"
-                        : "text-ink-900/80 hover:text-ink-900 dark:text-paper-50/80 dark:hover:text-paper-50"
+                        ? "text-ink-900 dark:text-paper-50"
+                        : "text-ink-900/60 hover:text-ink-900 dark:text-paper-50/60 dark:hover:text-paper-50"
                     }`}
-                    style={active ? { background: theme === "dark" ? "#ffc247" : c, transform: "translateY(-1px) scale(1.02)" } : undefined}
                   >
-                    {!active && (
-                      <span
-                        className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
-                        style={{ background: `${c}1f`, boxShadow: `inset 0 0 0 1.5px ${c}55` }}
-                      />
-                    )}
-                    <span className="relative z-10 flex items-center gap-1.5">
-                      <Icon name={t.icon} size={14} className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110" />
-                      <span className="hidden md:inline">{t.label}</span>
-                    </span>
+                    <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? "text-flame-500 dark:text-marigold-400" : ""}`} />
+                    <span className="hidden md:inline">{t.label}</span>
+                    {/* sliding underline indicator */}
                     {active && (
                       <motion.span
-                        layoutId="tab-spark"
-                        className="absolute -right-1 -top-1 z-20 grid h-4 w-4 place-items-center rounded-full bg-white text-[9px] shadow"
-                        transition={{ type: "spring", damping: 18, stiffness: 320 }}
-                      >
-                        ✦
-                      </motion.span>
+                        layoutId="tab-underline"
+                        className="absolute inset-x-2 bottom-0.5 h-[3px] rounded-full bg-gradient-to-r from-flame-500 via-marigold-400 to-teal-400"
+                        transition={{ type: "spring", damping: 26, stiffness: 260 }}
+                      />
                     )}
                   </button>
                 );
