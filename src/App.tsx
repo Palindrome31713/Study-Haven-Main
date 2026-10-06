@@ -96,35 +96,19 @@ export default function App() {
         <Icon name="atom" size={60} className="anim-floaty absolute right-[5%] top-[1150px] text-plum-500/12 dark:text-plum-400/20" style={{ ["--tilt" as string]: "6deg", animationDelay: "0.6s" }} />
       </div>
 
-      {/* ---------- CRAZY NAVBAR: single-line sticker-dock with a rainbow runner ---------- */}
-      <header className="sticky top-0 z-30">
-        {/* rainbow energy rail riding along the top edge */}
-        <div className="h-[3px] w-full bg-[linear-gradient(90deg,#ff5d3a,#ffb020,#2ec4b6,#3a6df0,#a06cd5,#ff5d3a)] bg-[length:200%_100%] anim-rail" aria-hidden />
-
-        <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
-          {/* floating candy dock — one line, everything inside */}
+      {/* ---------- Navbar: clean single-line glass dock, smooth motion ---------- */}
+      <header className="sticky top-0 z-30 pt-3 pb-1">
+        <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
+          {/* floating dock — one line, everything inside */}
           <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-white/70 bg-white/55 p-2 shadow-[0_18px_40px_-18px_rgba(26,26,46,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-paper-50/15 dark:bg-ink-900/55 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
-            {/* brand sticker */}
+            {/* brand — no RGB logo badge, just the wordmark */}
             <button
               onClick={() => goTo("home")}
               className="group relative flex shrink-0 items-center gap-2 rounded-2xl px-2 py-1.5"
               aria-label="Study Haven home"
             >
-              <span className="relative grid h-8 w-8 place-items-center rounded-xl bg-[conic-gradient(from_120deg,#ff5d3a,#ffb020,#2ec4b6,#3a6df0,#ff5d3a)] text-white shadow-[0_6px_16px_-6px_rgba(255,93,58,0.7)] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
-                <span className="grid h-[26px] w-[26px] place-items-center rounded-[9px] bg-white text-flame-500 dark:bg-ink-900 dark:text-marigold-400">
-                  <Wheel size={17} className="anim-spin-slow" />
-                </span>
-              </span>
-              <span className="brand-jiggle hidden whitespace-nowrap font-display text-[15px] font-extrabold leading-none sm:block">
-                {"STUDY HAVEN".split("").map((ch, i) => (
-                  <span
-                    key={i}
-                    className="inline-block bg-[linear-gradient(120deg,#ff5d3a,#ffb020,#2ec4b6,#3a6df0,#a06cd5,#ff5d3a)] bg-[length:300%_100%] bg-clip-text text-transparent anim-brandflow"
-                    style={{ animationDelay: `${i * 0.12}s`, transform: `rotate(${(i % 3) - 1}deg)` }}
-                  >
-                    {ch === " " ? "\u00A0" : ch}
-                  </span>
-                ))}
+              <span className="hidden whitespace-nowrap font-display text-[15px] font-extrabold leading-none tracking-tight text-ink-900 transition-colors duration-300 group-hover:text-flame-500 sm:block dark:text-paper-50 dark:group-hover:text-marigold-400">
+                Study&nbsp;Haven
               </span>
             </button>
 
@@ -138,21 +122,21 @@ export default function App() {
                   <button
                     key={t.id}
                     onClick={() => goTo(t.id)}
-                    className={`sticker-btn group relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-300 lg:px-3.5 ${
+                    className={`sticker-btn group relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] lg:px-3.5 ${
                       active
                         ? "text-white shadow-[0_10px_22px_-10px_rgba(26,26,46,0.6)] dark:text-ink-900"
                         : "text-ink-900/80 hover:text-ink-900 dark:text-paper-50/80 dark:hover:text-paper-50"
                     }`}
-                    style={active ? { background: theme === "dark" ? "#ffc247" : c, transform: "translateY(-2px) scale(1.04)" } : undefined}
+                    style={active ? { background: theme === "dark" ? "#ffc247" : c, transform: "translateY(-1px) scale(1.02)" } : undefined}
                   >
                     {!active && (
                       <span
-                        className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                        className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100"
                         style={{ background: `${c}1f`, boxShadow: `inset 0 0 0 1.5px ${c}55` }}
                       />
                     )}
                     <span className="relative z-10 flex items-center gap-1.5">
-                      <Icon name={t.icon} size={14} className="transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-110" />
+                      <Icon name={t.icon} size={14} className="transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110" />
                       <span className="hidden md:inline">{t.label}</span>
                     </span>
                     {active && (
