@@ -270,6 +270,41 @@ body {
 .line-mask { overflow: hidden; }
 .line-mask > span { display: block; }
 
+/* ---------- Crazy navbar: sticker dock + rainbow rail ---------- */
+@keyframes rail-flow {
+  to { background-position: 200% 0; }
+}
+.anim-rail { animation: rail-flow 6s linear infinite; }
+
+@keyframes brandflow {
+  to { background-position: -300% 0; }
+}
+.anim-brandflow { animation: brandflow 7s linear infinite; }
+
+/* whole wordmark gently sways on hover */
+.brand-jiggle:hover > span { animation: letter-bop 0.5s ease-in-out infinite alternate; }
+@keyframes letter-bop {
+  from { transform: translateY(0) rotate(var(--r, 0deg)); }
+  to   { transform: translateY(-3px) rotate(var(--r, 0deg)); }
+}
+
+/* the dock itself breathes like it's floating */
+@keyframes dock-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+.anim-dock { animation: dock-float 9s ease-in-out infinite; }
+
+/* tab stickers get a random-ish tilt for a hand-placed look */
+.sticker-btn { transform: rotate(0.8deg); }
+.sticker-btn:nth-child(even) { transform: rotate(-0.8deg); }
+.sticker-btn:hover { transform: translateY(-2px) rotate(-3deg) scale(1.05); }
+.sticker-btn:active { transform: scale(0.94) rotate(0deg) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-rail, .anim-brandflow, .anim-dock, .brand-jiggle:hover > span { animation: none !important; }
+}
+
 /* custom scrollbar */
 ::-webkit-scrollbar { width: 11px; height: 11px; }
 ::-webkit-scrollbar-track { background: transparent; }
