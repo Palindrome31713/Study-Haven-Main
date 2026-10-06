@@ -96,29 +96,39 @@ export default function App() {
         <Icon name="atom" size={60} className="anim-floaty absolute right-[5%] top-[1150px] text-plum-500/12 dark:text-plum-400/20" style={{ ["--tilt" as string]: "6deg", animationDelay: "0.6s" }} />
       </div>
 
-      {/* ---------- header ---------- */}
-      <header className="sticky top-0 z-30 border-b-2 border-ink-900 bg-paper-50/92 backdrop-blur-md dark:border-ink-900 dark:bg-paper-50/85">
-        <div className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-3.5 md:px-10">
-          <button onClick={() => goTo("home")} className="group flex items-center gap-2.5" aria-label="Study Haven home">
-            <span className="text-flame-500 transition-transform duration-700 group-hover:rotate-90"><Wheel size={30} /></span>
-            <span className="hidden leading-none sm:block">
-              <span className="block font-display text-lg font-extrabold tracking-[0.08em] text-ink-900">STUDY HAVEN</span>
-              <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-ink-600">सीबीएसई · क्लास 9–12</span>
+      {/* ---------- floating dock nav (single line) ---------- */}
+      <header className="pointer-events-none sticky top-0 z-30">
+        <div className="pointer-events-auto mx-auto mt-3 flex w-fit max-w-[96vw] items-center gap-1 rounded-full border border-ink-900/10 bg-paper-50/70 p-1.5 shadow-[0_10px_40px_-12px_rgba(26,26,46,0.35)] backdrop-blur-xl transition-colors duration-300 dark:border-paper-50/10 dark:bg-ink-900/60">
+          {/* brand — single line now, no stacked tagline */}
+          <button
+            onClick={() => goTo("home")}
+            className="group mr-1 flex shrink-0 items-center gap-2 rounded-full px-2.5 py-1.5"
+            aria-label="Study Haven home"
+          >
+            <span className="text-flame-500 transition-transform duration-700 group-hover:rotate-90"><Wheel size={22} /></span>
+            <span className="hidden whitespace-nowrap font-display text-sm font-extrabold tracking-[0.08em] text-ink-900 sm:block dark:text-paper-50">
+              STUDY&nbsp;HAVEN
             </span>
           </button>
 
-          {/* tabs */}
-          <nav className="ml-auto flex items-center gap-1 rounded-full border-2 border-ink-900/10 bg-paper-100 p-1 sm:ml-6">
+          <span className="mr-1 h-6 w-px shrink-0 bg-ink-900/10 dark:bg-paper-50/10" aria-hidden />
+
+          {/* tabs — sliding pill indicator */}
+          <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {TABS.map((t) => (
               <button
                 key={t.id}
                 onClick={() => goTo(t.id)}
-                className={`relative flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition-colors duration-300 sm:px-4 sm:text-[13px] ${tab === t.id ? "text-paper-50" : "text-ink-600 hover:text-ink-900"}`}
+                className={`relative flex shrink-0 items-center gap-1.5 rounded-full px-3 py-2 text-xs font-bold transition-colors duration-300 lg:px-3.5 ${
+                  tab === t.id
+                    ? "text-paper-50 dark:text-ink-900"
+                    : "text-ink-600 hover:text-ink-900 dark:text-paper-200 dark:hover:text-paper-50"
+                }`}
               >
                 {tab === t.id && (
                   <motion.span
                     layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full bg-ink-900"
+                    className="absolute inset-0 rounded-full bg-ink-900 shadow-[inset_0_-2px_0_rgba(255,255,255,0.15)] dark:bg-marigold-400"
                     transition={{ type: "spring", damping: 26, stiffness: 380 }}
                   />
                 )}
@@ -130,14 +140,15 @@ export default function App() {
             ))}
           </nav>
 
-          {/* identity */}
-          <div className="ml-auto flex items-center gap-2.5">
-            {/* dark / light theme toggle */}
+          <span className="mx-1 h-6 w-px shrink-0 bg-ink-900/10 dark:bg-paper-50/10" aria-hidden />
+
+          {/* identity cluster — everything on one line */}
+          <div className="flex shrink-0 items-center gap-1.5">
             <button
               onClick={toggleTheme}
               title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              className="relative grid h-9 w-9 place-items-center overflow-hidden rounded-full border-2 border-ink-900/15 text-ink-600 transition-all duration-300 hover:rotate-12 hover:border-ink-900 hover:text-ink-900"
+              className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-full border border-ink-900/15 text-ink-600 transition-all duration-300 hover:rotate-12 hover:border-ink-900 hover:text-ink-900 dark:border-paper-50/15 dark:text-paper-200 dark:hover:border-paper-50 dark:hover:text-paper-50"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -148,24 +159,22 @@ export default function App() {
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute inset-0 grid place-items-center"
                 >
-                  <Icon name={theme === "dark" ? "sun" : "moon"} size={16} className={theme === "dark" ? "text-marigold-500" : ""} />
+                  <Icon name={theme === "dark" ? "sun" : "moon"} size={15} className={theme === "dark" ? "text-marigold-500" : ""} />
                 </motion.span>
               </AnimatePresence>
             </button>
-            <span className="hidden items-center gap-1.5 rounded-full border-2 border-ink-900 px-3 py-1.5 text-[11px] font-extrabold text-ink-900 lg:flex">
-              <Icon name="cap" size={13} className="text-flame-500" />
+            <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full border border-ink-900/15 px-2.5 py-1 text-[10px] font-extrabold text-ink-900 xl:flex dark:border-paper-50/15 dark:text-paper-50">
+              <Icon name="cap" size={12} className="text-flame-500" />
               Class {profile.grade}{streamName ? ` · ${streamName}` : ""}
-            </span>
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-marigold-400 font-display text-base font-extrabold text-ink-900 ring-2 ring-ink-900">
-              {profile.name.charAt(0).toUpperCase()}
             </span>
             <button
               onClick={resetProfile}
               title="Change my details"
               aria-label="Change my details"
-              className="grid h-9 w-9 place-items-center rounded-full border-2 border-ink-900/15 text-ink-600 transition-all duration-300 hover:rotate-12 hover:border-ink-900 hover:text-ink-900"
+              className="relative grid h-8 w-8 place-items-center rounded-full bg-marigold-400 font-display text-sm font-extrabold text-ink-900 ring-2 ring-ink-900/80 transition-transform duration-300 hover:-translate-y-0.5 dark:ring-paper-50/70"
             >
-              <Icon name="edit" size={15} />
+              <span className="transition-opacity duration-200 group-hover:opacity-0">{profile.name.charAt(0).toUpperCase()}</span>
+              <Icon name="edit" size={13} className="absolute opacity-0 transition-opacity duration-200 hover:opacity-100" />
             </button>
           </div>
         </div>
