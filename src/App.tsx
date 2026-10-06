@@ -18,15 +18,62 @@ import {
   type Stats, type Tab,
 } from "./lib/store";
 
-const TABS: Array<{ id: Tab; label: string; icon: string }> = [
-  { id: "home", label: "My Desk", icon: "book" },
-  { id: "library", label: "Library", icon: "doc" },
-  { id: "videos", label: "Videos", icon: "play" },
-  { id: "quiz", label: "Quizzes", icon: "calc" },
-  { id: "timer", label: "Study Timer", icon: "clock" },
-  { id: "news", label: "News", icon: "news" },
-  { id: "papers", label: "Sample Papers", icon: "paperclip" },
+const TABS: Array<{ id: Tab; label: string; icon: string; accent: AccentKey }> = [
+  { id: "home", label: "My Desk", icon: "book", accent: "cobalt" },      // blue
+  { id: "library", label: "Library", icon: "doc", accent: "teal" },      // green
+  { id: "videos", label: "Videos", icon: "play", accent: "flame" },      // orange-red
+  { id: "quiz", label: "Quizzes", icon: "calc", accent: "plum" },        // purple
+  { id: "timer", label: "Study Timer", icon: "clock", accent: "cyan" },  // sky-cyan
+  { id: "news", label: "News", icon: "news", accent: "rose" },           // pink-rose
+  { id: "papers", label: "Sample Papers", icon: "paperclip", accent: "moss" }, // leaf-green
 ];
+
+/* Per-tab accent colours — full literal class strings so Tailwind can see them. */
+type AccentKey = "cobalt" | "teal" | "flame" | "plum" | "cyan" | "rose" | "moss";
+const ACCENTS: Record<AccentKey, { bar: string; text: string; pill: string; iconText: string }> = {
+  cobalt: {
+    bar: "bg-cobalt-600 dark:bg-cobalt-400",
+    text: "text-cobalt-700 dark:text-cobalt-400",
+    pill: "bg-cobalt-500/10 dark:bg-cobalt-400/15",
+    iconText: "text-cobalt-600 dark:text-cobalt-400",
+  },
+  teal: {
+    bar: "bg-teal-600 dark:bg-teal-400",
+    text: "text-teal-700 dark:text-teal-400",
+    pill: "bg-teal-500/10 dark:bg-teal-400/15",
+    iconText: "text-teal-600 dark:text-teal-400",
+  },
+  flame: {
+    bar: "bg-flame-600 dark:bg-flame-400",
+    text: "text-flame-600 dark:text-flame-400",
+    pill: "bg-flame-500/10 dark:bg-flame-400/15",
+    iconText: "text-flame-600 dark:text-flame-400",
+  },
+  plum: {
+    bar: "bg-[#6d28d9] dark:bg-plum-400",
+    text: "text-[#6d28d9] dark:text-plum-400",
+    pill: "bg-plum-500/10 dark:bg-plum-400/15",
+    iconText: "text-plum-500 dark:text-plum-400",
+  },
+  cyan: {
+    bar: "bg-[#0284c7] dark:bg-[#38bdf8]",
+    text: "text-[#0369a1] dark:text-[#7dd3fc]",
+    pill: "bg-[#0ea5e9]/10 dark:bg-[#38bdf8]/15",
+    iconText: "text-[#0284c7] dark:text-[#38bdf8]",
+  },
+  rose: {
+    bar: "bg-[#be185d] dark:bg-[#f472b6]",
+    text: "text-[#be123c] dark:text-[#fda4af]",
+    pill: "bg-[#e11d48]/10 dark:bg-[#f472b6]/15",
+    iconText: "text-[#e11d48] dark:text-[#f472b6]",
+  },
+  moss: {
+    bar: "bg-[#4d7c0f] dark:bg-[#a3e635]",
+    text: "text-[#3f6212] dark:text-[#bef264]",
+    pill: "bg-[#65a30d]/10 dark:bg-[#a3e635]/15",
+    iconText: "text-[#4d7c0f] dark:text-[#a3e635]",
+  },
+};
 
 export default function App() {
   const [profile, setProfile] = useState<Profile | null>(() => loadProfile());
@@ -99,8 +146,8 @@ export default function App() {
       {/* ---------- Navbar: clean single-line glass dock, smooth motion ---------- */}
       <header className="sticky top-0 z-30 pt-3 pb-1">
         <div className="mx-auto flex min-h-16 max-w-7xl items-center gap-2 px-5 md:px-10">
-          {/* floating dock — one line, everything inside */}
-          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-cobalt-500/20 bg-paper-50/85 p-2 shadow-[0_18px_40px_-18px_rgba(30,64,175,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-cobalt-400/20 dark:bg-ink-900/70 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
+          {/* floating dock — one line, everything inside; warm paper tint matching the notebook theme */}
+          <div className="anim-dock relative flex w-full items-center gap-2 rounded-[26px] border border-cobalt-500/25 bg-[#f6f8ff]/85 p-2 shadow-[0_18px_40px_-18px_rgba(30,64,175,0.35),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-xl transition-colors duration-300 dark:border-cobalt-400/25 dark:bg-[#101a33]/75 dark:shadow-[0_18px_40px_-18px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)]">
             {/* brand — moving wheel logo + clean wordmark */}
             <button
               onClick={() => goTo("home")}
@@ -121,23 +168,24 @@ export default function App() {
             <nav className="flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {TABS.map((t) => {
                 const active = tab === t.id;
+                const a = ACCENTS[t.accent];
                 return (
                   <button
                     key={t.id}
                     onClick={() => goTo(t.id)}
                     className={`group relative flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-extrabold tracking-wide transition-all duration-300 ease-out lg:px-3.5 ${
                       active
-                        ? "bg-cobalt-500/10 text-ink-900 dark:bg-cobalt-400/15 dark:text-paper-50"
+                        ? `${a.pill} ${a.text}`
                         : "text-ink-900/60 hover:text-ink-900 dark:text-paper-50/60 dark:hover:text-paper-50"
                     }`}
                   >
-                    <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? "text-cobalt-600 dark:text-cobalt-400" : ""}`} />
+                    <Icon name={t.icon} size={14} className={`transition-transform duration-300 ease-out group-hover:-translate-y-0.5 ${active ? a.iconText : ""}`} />
                     <span className="hidden md:inline">{t.label}</span>
-                    {/* sliding highlight bar under the active tab */}
+                    {/* sliding highlight bar under the active tab — unique colour per section */}
                     {active && (
                       <motion.span
                         layoutId="tab-underline"
-                        className="absolute inset-x-2 bottom-0.5 h-[3px] rounded-full bg-cobalt-600 dark:bg-cobalt-400"
+                        className={`absolute inset-x-2 bottom-0.5 h-[3px] rounded-full ${a.bar}`}
                         transition={{ type: "spring", damping: 26, stiffness: 260 }}
                       />
                     )}
